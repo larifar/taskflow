@@ -10,11 +10,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
     private String password;
-    @Column(nullable = false)
     private String email;
     @OneToMany(mappedBy = "creator")
     private List<Task> taskCreated;
