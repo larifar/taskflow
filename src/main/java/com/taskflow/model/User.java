@@ -1,7 +1,11 @@
 package com.taskflow.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
+import java.beans.Encoder;
 import java.util.List;
 
 @Entity
@@ -10,8 +14,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotBlank(message = "Nome não pode ser nulo")
+    @Size(min = 3, message = "Nome deve ter pelo menos 3 caracteres")
     private String name;
+    @NotBlank(message = "Senha não pode ser nula")
+    @Size(min = 6, message = "Senha deve ter pelo menos 6 caracteres")
     private String password;
+    @NotBlank(message = "Email não pode ser nulo")
+    @Email(message = "Email não válido.")
     private String email;
     @OneToMany(mappedBy = "creator")
     private List<Task> taskCreated;
