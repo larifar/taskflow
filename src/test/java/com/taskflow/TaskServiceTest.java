@@ -1,4 +1,5 @@
 package com.taskflow;
+import com.taskflow.exception.ExceptionTaskFlow;
 import com.taskflow.model.Task;
 import com.taskflow.repository.TaskRepo;
 import com.taskflow.service.TaskService;
@@ -29,7 +30,7 @@ public class TaskServiceTest {
     private TaskService taskService;
 
     @Test
-    public void testSaveTask() {
+    public void testSaveTask() throws ExceptionTaskFlow {
         // Arrange
         Task task = new Task();
         Mockito.when(repository.save(task)).thenReturn(task);
@@ -72,7 +73,7 @@ public class TaskServiceTest {
     }
 
     @Test
-    public void testGetAllByUserId_UserExists() {
+    public void testGetAllByUserId_UserExists() throws ExceptionTaskFlow {
         // Arrange
         Long userId = 1L;
         List<Task> tasks = List.of(new Task());
@@ -89,7 +90,7 @@ public class TaskServiceTest {
     }
 
     @Test
-    public void testGetAllByUserId_UserNotExists() {
+    public void testGetAllByUserId_UserNotExists() throws ExceptionTaskFlow {
         // Arrange
         Long userId = 1L;
         Mockito.when(userService.existsById(userId)).thenReturn(false);

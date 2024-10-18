@@ -1,6 +1,8 @@
 package com.taskflow.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -10,12 +12,16 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @NotEmpty(message = "A tarefa precisa de uma descrição.")
     private String description;
+    @NotNull(message = "A tarefa precisa de um prazo.")
     private LocalDate due;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @NotNull(message = "A tarefa precisa estar associada a um usuário.")
     private User creator;
     @Column(name = "date_created", nullable = false)
+    @NotNull(message = "A tarefa precisa ter uma data de criação.")
     private LocalDate dateCreated;
     @Column(name = "date_completed")
     private LocalDate dateCompleted;

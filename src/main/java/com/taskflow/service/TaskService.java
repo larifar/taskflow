@@ -1,5 +1,6 @@
 package com.taskflow.service;
 
+import com.taskflow.exception.ExceptionTaskFlow;
 import com.taskflow.model.Task;
 import com.taskflow.repository.TaskRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,10 @@ public class TaskService {
     @Autowired
     private UserService userService;
 
-    public Task save(Task task){
+    public Task save(Task task) throws ExceptionTaskFlow {
+        if (!userService.existsById(task.getCreator().getId())){
+            throw new ExceptionTaskFlow("Usuário não encontrado com id: " +  task.getCreator().getId());
+        }
         return repository.save(task);
     }
 
@@ -25,9 +29,9 @@ public class TaskService {
         return repository.findById(id);
     }
 
-    public List<Task> getAllByUserId(Long userId){
-        if (!userService.existsById(userId)) {
-            return Collections.emptyList();
+    public List<Task> getAllByUserId(Long userId) throws ExceptionTaskFlow {
+        if (!userService.existsById(userId)){
+            throw new ExceptionTaskFlow("Usuário não encontrado com id: " +  userId);
         }
         return repository.getTasksByCreatorId(userId).orElse(Collections.emptyList());
 
