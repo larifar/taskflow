@@ -1,6 +1,7 @@
 package com.taskflow;
 import com.taskflow.exception.ExceptionTaskFlow;
 import com.taskflow.model.Task;
+import com.taskflow.model.User;
 import com.taskflow.repository.TaskRepo;
 import com.taskflow.service.TaskService;
 import com.taskflow.service.UserService;
@@ -13,6 +14,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +34,15 @@ public class TaskServiceTest {
     @Test
     public void testSaveTask() throws ExceptionTaskFlow {
         // Arrange
+        var userId = 1L;
+        User user = new User();
+        user.setId(userId);
         Task task = new Task();
+        task.setCreator(user);
+        task.setDescription("Teste");
+        task.setDue(LocalDate.now().plusDays(3));
+        task.setDateCreated(LocalDate.now());
+        Mockito.when(userService.existsById(userId)).thenReturn(true);
         Mockito.when(repository.save(task)).thenReturn(task);
 
         // Act
@@ -90,16 +100,15 @@ public class TaskServiceTest {
     }
 
     @Test
-    public void testGetAllByUserId_UserNotExists() throws ExceptionTaskFlow {
+    public void testGetAllByUserId_UserNotExists(){
         // Arrange
         Long userId = 1L;
         Mockito.when(userService.existsById(userId)).thenReturn(false);
 
-        // Act
-        List<Task> result = taskService.getAllByUserId(userId);
+        // Act & Throws
+        ExceptionTaskFlow exception = Assertions.assertThrows(ExceptionTaskFlow.class, () -> taskService.getAllByUserId(userId));
 
         // Assert
-        Assertions.assertTrue(result.isEmpty());
         Mockito.verify(userService, Mockito.times(1)).existsById(userId);
         Mockito.verify(repository, Mockito.never()).getTasksByCreatorId(userId);
     }
