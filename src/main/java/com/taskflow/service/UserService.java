@@ -3,6 +3,7 @@ package com.taskflow.service;
 import com.taskflow.model.User;
 import com.taskflow.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -13,6 +14,9 @@ public class UserService {
     private UserRepo repository;
 
     public User saveUser(User user){
+        if (user.getId() <=0){
+            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        }
         return repository.save(user);
     }
 
