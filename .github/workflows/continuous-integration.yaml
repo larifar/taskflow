@@ -3,6 +3,7 @@ on:
   pull_request:
     branches:
       - feat
+      - main
 jobs:
   tests:
     runs-on: ubuntu-latest
