@@ -27,6 +27,9 @@ public class UserServiceTest {
     public void testSaveUser() {
         // Arrange
         User user = new User();
+        user.setPassword("senha123");
+        user.setEmail("user@email.com");
+        user.setName("Nome Teste");
         Mockito.when(repository.save(user)).thenReturn(user);
 
         // Act
