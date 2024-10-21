@@ -1,0 +1,19 @@
+name: Continuous Integration Java
+on:
+  pull_request:
+    branches:
+      - feat
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v4
+
+      - name: SetUp Java JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Unit tests
+        uses: mvn test
