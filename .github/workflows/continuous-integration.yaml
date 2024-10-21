@@ -16,4 +16,4 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Unit tests
-        uses: mvn test
+        run: mvn test
